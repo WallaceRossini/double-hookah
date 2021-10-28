@@ -1,2 +1,1 @@
-database: yarn typeorm migration:run
-start: yarn start
+web: yarn typeorm migration:run && yarn start
