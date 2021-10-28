@@ -1,1 +1,1 @@
-web: npx typeorm migration:run && yarn start
+web: npx typeorm migration:run && node dist/server.js
