@@ -1,0 +1,11 @@
+{
+  "type": "postgres",
+  "url":"postgres://erxbwwyczbyzku:8d7ffb050996f3ac40073a293ddc87f2d492f518fcf7f24a9e88b777cba9206b@ec2-34-205-217-14.compute-1.amazonaws.com:5432/d66jd8s63mqbl1",
+  "synchronize": true,
+  "logging": false,
+  "entities": ["./src/entities/*.ts"],
+  "migrations": ["./src/database/migrations/*.ts"],
+  "cli": {
+    "migrationsDir": "./src/database/migrations"
+  }
+}

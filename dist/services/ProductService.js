@@ -40,10 +40,43 @@ exports.ProductService = void 0;
 var typeorm_1 = require("typeorm");
 var ProductDto_1 = require("../dtos/ProductDto");
 var ProductRepository_1 = require("../repositories/ProductRepository");
+var S3StorageService_1 = require("./S3StorageService");
 var ProductService = /** @class */ (function () {
     function ProductService() {
         this.product_service = (0, typeorm_1.getCustomRepository)(ProductRepository_1.ProductRepository);
     }
+    ProductService.prototype.index = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var products, all;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, this.product_service.find()];
+                    case 1:
+                        products = _a.sent();
+                        all = [];
+                        products.forEach(function (item) { return all.push(new ProductDto_1.ProductDto(item)); });
+                        return [2 /*return*/, all];
+                }
+            });
+        });
+    };
+    ProductService.prototype.show = function (_a) {
+        var id = _a.id;
+        return __awaiter(this, void 0, void 0, function () {
+            var exist_product, product;
+            return __generator(this, function (_b) {
+                switch (_b.label) {
+                    case 0: return [4 /*yield*/, this.product_service.findOne(id)];
+                    case 1:
+                        exist_product = _b.sent();
+                        if (!exist_product)
+                            return [2 /*return*/, new Error('Product does not exists')];
+                        product = new ProductDto_1.ProductDto(exist_product);
+                        return [2 /*return*/, product];
+                }
+            });
+        });
+    };
     ProductService.prototype.create = function (_a) {
         var name = _a.name, price = _a.price, category = _a.category, brand = _a.brand, detail = _a.detail, image = _a.image, weight = _a.weight;
         return __awaiter(this, void 0, void 0, function () {
@@ -65,6 +98,57 @@ var ProductService = /** @class */ (function () {
                         _b.sent();
                         result = new ProductDto_1.ProductDto(product);
                         return [2 /*return*/, result];
+                }
+            });
+        });
+    };
+    ProductService.prototype.update = function (id, product) {
+        return __awaiter(this, void 0, void 0, function () {
+            var exist_product, property, object;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, this.product_service.findOne(id)];
+                    case 1:
+                        exist_product = _a.sent();
+                        if (!exist_product)
+                            return [2 /*return*/, new Error('Product does not exists')];
+                        for (property in exist_product) {
+                            if (product[property] !== undefined) {
+                                if (exist_product[property] !== product[property]) {
+                                    exist_product[property] = product[property];
+                                }
+                            }
+                        }
+                        return [4 /*yield*/, this.product_service.save(exist_product)];
+                    case 2:
+                        _a.sent();
+                        object = new ProductDto_1.ProductDto(exist_product);
+                        return [2 /*return*/, object];
+                }
+            });
+        });
+    };
+    ProductService.prototype.delete = function (_a) {
+        var id = _a.id;
+        return __awaiter(this, void 0, void 0, function () {
+            var exist_product, s3_storage_service, filename, product;
+            return __generator(this, function (_b) {
+                switch (_b.label) {
+                    case 0: return [4 /*yield*/, this.product_service.findOne(id)];
+                    case 1:
+                        exist_product = _b.sent();
+                        if (!exist_product)
+                            return [2 /*return*/, new Error('Product does not exists')];
+                        s3_storage_service = new S3StorageService_1.S3StorageService();
+                        filename = exist_product.image.substring(exist_product.image.indexOf(".com/") + 5);
+                        return [4 /*yield*/, s3_storage_service.delete(filename)];
+                    case 2:
+                        _b.sent();
+                        return [4 /*yield*/, this.product_service.remove(exist_product)];
+                    case 3:
+                        _b.sent();
+                        product = new ProductDto_1.ProductDto(exist_product);
+                        return [2 /*return*/, product];
                 }
             });
         });

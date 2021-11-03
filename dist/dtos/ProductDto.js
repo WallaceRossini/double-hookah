@@ -3,7 +3,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.ProductDto = void 0;
 var ProductDto = /** @class */ (function () {
     function ProductDto(_a) {
-        var name = _a.name, price = _a.price, detail = _a.detail, category = _a.category, image = _a.image, weight = _a.weight, brand = _a.brand;
+        var id = _a.id, name = _a.name, price = _a.price, detail = _a.detail, category = _a.category, image = _a.image, weight = _a.weight, brand = _a.brand;
+        this.id = id;
         this.name = name;
         this.price = price;
         this.detail = detail;

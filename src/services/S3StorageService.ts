@@ -14,12 +14,6 @@ export class S3StorageService {
     const s3 = new S3Storage();
 
     await s3.delete(filename)
-      .then(data =>
-        console.log(data)
-      )
-      .catch(e => {
-        return new Error(e)
-      });
 
   }
 }

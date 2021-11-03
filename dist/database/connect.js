@@ -40,11 +40,7 @@ exports.PostgresConnector = void 0;
 var typeorm_1 = require("typeorm");
 var PostgresConnector = /** @class */ (function () {
     function PostgresConnector() {
-        this.host = String(process.env.DATABASE_HOST);
-        this.port = Number(process.env.DATABASE_PORT);
-        this.username = String(process.env.DATABASE_USER);
-        this.password = String(process.env.DATABASE_PASS);
-        this.database = String(process.env.DATABASE_NAME);
+        this.url = String(process.env.DATABASE_URL);
         this.entities = __dirname + "/../" + process.env.DATABASE_ENTITIES;
     }
     Object.defineProperty(PostgresConnector.prototype, "connection", {
@@ -62,14 +58,10 @@ var PostgresConnector = /** @class */ (function () {
                     case 0:
                         opts = {
                             type: 'postgres',
-                            host: this.host,
-                            port: this.port,
+                            url: this.url,
                             ssl: {
-                                rejectUnauthorized: false,
+                                rejectUnauthorized: false
                             },
-                            username: this.username,
-                            password: this.password,
-                            database: this.database,
                             entities: [
                                 this.entities
                             ]

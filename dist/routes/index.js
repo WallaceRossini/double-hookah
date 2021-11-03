@@ -12,5 +12,9 @@ var routes = (0, express_1.Router)();
 exports.routes = routes;
 var product_ctrl = new ProductController_1.ProductController();
 var uploads = (0, multer_1.default)(Multer_1.default);
+routes.get('/products', product_ctrl.index);
+routes.get('/products/:id', product_ctrl.show);
 routes.post('/products', uploads.single('image'), product_ctrl.create);
+routes.patch('/products/:id', uploads.single('image'), product_ctrl.update);
+routes.delete('/products/:id', product_ctrl.delete);
 //# sourceMappingURL=index.js.map

@@ -1,6 +1,7 @@
-import { ProductCreateIFC } from '../interfaces/ProductIFC'
+import { ProductIFC } from '../interfaces/ProductIFC'
 export class ProductDto {
 
+  public id: string;
   public name: string;
   public price: number;
   public detail: string;
@@ -9,13 +10,14 @@ export class ProductDto {
   public weight: string;
   public brand: string;
 
-  constructor({ name, price, detail, category, image, weight, brand }: ProductCreateIFC) {
-    this.name = name
-    this.price = price
-    this.detail = detail
-    this.category = category
-    this.image = image
-    this.weight = weight
-    this.brand = brand
+  constructor({ id, name, price, detail, category, image, weight, brand }: ProductIFC) {
+    this.id = id;
+    this.name = name;
+    this.price = price;
+    this.detail = detail;
+    this.category = category;
+    this.image = image;
+    this.weight = weight;
+    this.brand = brand;
   }
 }

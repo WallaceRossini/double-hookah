@@ -63,13 +63,7 @@ var S3StorageService = /** @class */ (function () {
                 switch (_a.label) {
                     case 0:
                         s3 = new S3Storage_1.S3Storage();
-                        return [4 /*yield*/, s3.delete(filename)
-                                .then(function (data) {
-                                return console.log(data);
-                            })
-                                .catch(function (e) {
-                                return new Error(e);
-                            })];
+                        return [4 /*yield*/, s3.delete(filename)];
                     case 1:
                         _a.sent();
                         return [2 /*return*/];

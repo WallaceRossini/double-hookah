@@ -1,4 +1,9 @@
+export interface ProductID {
+  id: string;
+}
+
 export interface ProductIFC {
+  id: string;
   name: string;
   price: number;
   detail: string;
@@ -17,6 +22,16 @@ export interface ProductRequestIFC {
   category: string;
   weight: string;
   brand: string;
+}
+
+export interface ProductUpdateIFC {
+  image?:string;
+  name?: string;
+  price?: string;
+  detail?: string;
+  category?: string;
+  weight?: string;
+  brand?: string;
 }
 
 export interface ProductCreateIFC {
