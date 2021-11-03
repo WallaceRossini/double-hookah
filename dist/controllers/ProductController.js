@@ -55,14 +55,15 @@ var ProductController = /** @class */ (function () {
     }
     ProductController.prototype.index = function (request, response) {
         return __awaiter(this, void 0, void 0, function () {
-            var product_service, result;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
+            var _a, skip, take, product_service, result;
+            return __generator(this, function (_b) {
+                switch (_b.label) {
                     case 0:
+                        _a = request.query, skip = _a.skip, take = _a.take;
                         product_service = new ProductService_1.ProductService();
-                        return [4 /*yield*/, product_service.index()];
+                        return [4 /*yield*/, product_service.index(Number(skip), Number(take))];
                     case 1:
-                        result = _a.sent();
+                        result = _b.sent();
                         return [2 /*return*/, response.status(200).json(result)];
                 }
             });

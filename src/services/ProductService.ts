@@ -13,9 +13,9 @@ export class ProductService {
     this.product_service = getCustomRepository(ProductRepository)
   }
 
-  async index(): Promise<ProductDto[]> {
+  async index(skip:number = 0, take:number = 10): Promise<ProductDto[]> {
 
-    const products = await this.product_service.find();
+    const products = await this.product_service.find({skip,take});
 
     const all: ProductDto[] = [];
 

@@ -52,11 +52,24 @@ var PostgresConnector = /** @class */ (function () {
     });
     PostgresConnector.prototype.connect = function () {
         return __awaiter(this, void 0, void 0, function () {
-            var opts, connection;
+            var opts_production, opts_development, connection;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        opts = {
+                        opts_production = {
+                            type: 'postgres',
+                            url: this.url,
+                            ssl: true,
+                            extra: {
+                                ssl: {
+                                    rejectUnauthorized: false,
+                                },
+                            },
+                            entities: [
+                                this.entities
+                            ]
+                        };
+                        opts_development = {
                             type: 'postgres',
                             url: this.url,
                             ssl: {
@@ -66,7 +79,7 @@ var PostgresConnector = /** @class */ (function () {
                                 this.entities
                             ]
                         };
-                        return [4 /*yield*/, (0, typeorm_1.createConnection)(opts)];
+                        return [4 /*yield*/, (0, typeorm_1.createConnection)(process.env.NODE_ENV == 'development' ? opts_development : opts_production)];
                     case 1:
                         connection = _a.sent();
                         PostgresConnector.postgres_connection = connection;

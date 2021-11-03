@@ -8,9 +8,11 @@ export class ProductController {
 
   async index(request: Request, response: Response) {
 
+    const { skip,take } = request.query
+
     const product_service = new ProductService();
 
-    const result = await product_service.index();
+    const result = await product_service.index(Number(skip), Number(take));
 
     return response.status(200).json(result);
   }

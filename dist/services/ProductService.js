@@ -45,12 +45,14 @@ var ProductService = /** @class */ (function () {
     function ProductService() {
         this.product_service = (0, typeorm_1.getCustomRepository)(ProductRepository_1.ProductRepository);
     }
-    ProductService.prototype.index = function () {
+    ProductService.prototype.index = function (skip, take) {
+        if (skip === void 0) { skip = 0; }
+        if (take === void 0) { take = 10; }
         return __awaiter(this, void 0, void 0, function () {
             var products, all;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, this.product_service.find()];
+                    case 0: return [4 /*yield*/, this.product_service.find({ skip: skip, take: take })];
                     case 1:
                         products = _a.sent();
                         all = [];
