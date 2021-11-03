@@ -13,7 +13,7 @@ export class ProductService {
     this.product_service = getCustomRepository(ProductRepository)
   }
 
-  async index(skip:number = 0, take:number = 10): Promise<ProductDto[]> {
+  async index(skip:number, take:number): Promise<ProductDto[]> {
 
     const products = await this.product_service.find({skip,take});
 

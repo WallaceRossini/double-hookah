@@ -46,8 +46,6 @@ var ProductService = /** @class */ (function () {
         this.product_service = (0, typeorm_1.getCustomRepository)(ProductRepository_1.ProductRepository);
     }
     ProductService.prototype.index = function (skip, take) {
-        if (skip === void 0) { skip = 0; }
-        if (take === void 0) { take = 10; }
         return __awaiter(this, void 0, void 0, function () {
             var products, all;
             return __generator(this, function (_a) {
