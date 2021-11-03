@@ -20,10 +20,24 @@ export class PostgresConnector {
   public async connect() {
 
 
-    const opts: ConnectionOptions = {
+    const opts_production: ConnectionOptions = {
       type: 'postgres',
       url: this.url,
-      ssl:{
+      ssl: true,
+      extra: {
+        ssl: {
+          rejectUnauthorized: false,
+        },
+      },
+      entities: [
+        this.entities
+      ]
+    }
+
+    const opts_development: ConnectionOptions = {
+      type: 'postgres',
+      url: this.url,
+      ssl: {
         rejectUnauthorized: false
       },
       entities: [
@@ -31,9 +45,7 @@ export class PostgresConnector {
       ]
     }
 
-
-    
-    const connection = await createConnection(opts);
+    const connection = await createConnection(process.env.NODE_ENV == 'development' ? opts_development : opts_production);
 
     PostgresConnector.postgres_connection = connection
 
