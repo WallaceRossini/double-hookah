@@ -1,5 +1,6 @@
-import { Column, Entity } from "typeorm";
+import { Column, Entity, JoinColumn, ManyToOne } from "typeorm";
 import { BaseEntity } from "./BaseEntity";
+import { Category } from "./Category";
 
 @Entity('products')
 export class Product extends BaseEntity {
@@ -13,11 +14,9 @@ export class Product extends BaseEntity {
   @Column()
   detail: string;
 
-  @Column({ type: 'decimal', precision: 2, scale: 1, default: 0.0 })
-  stars: number;
-
-  @Column()
-  category: string;
+  @JoinColumn({name:'category'})
+  @ManyToOne(type => Category, category => category.key)
+  category: Category;
 
   @Column()
   image: string;

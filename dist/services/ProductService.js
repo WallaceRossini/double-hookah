@@ -39,18 +39,20 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.ProductService = void 0;
 var typeorm_1 = require("typeorm");
 var ProductDto_1 = require("../dtos/ProductDto");
+var CategoryRepository_1 = require("../repositories/CategoryRepository");
 var ProductRepository_1 = require("../repositories/ProductRepository");
 var S3StorageService_1 = require("./S3StorageService");
 var ProductService = /** @class */ (function () {
     function ProductService() {
         this.product_service = (0, typeorm_1.getCustomRepository)(ProductRepository_1.ProductRepository);
+        this.category_service = (0, typeorm_1.getCustomRepository)(CategoryRepository_1.CategoryRepository);
     }
     ProductService.prototype.index = function (skip, take) {
         return __awaiter(this, void 0, void 0, function () {
             var products, all;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, this.product_service.find({ skip: skip, take: take })];
+                    case 0: return [4 /*yield*/, this.product_service.find({ skip: skip, take: take, relations: ['category'], order: { name: 'ASC' } })];
                     case 1:
                         products = _a.sent();
                         all = [];
@@ -66,7 +68,7 @@ var ProductService = /** @class */ (function () {
             var exist_product, product;
             return __generator(this, function (_b) {
                 switch (_b.label) {
-                    case 0: return [4 /*yield*/, this.product_service.findOne(id)];
+                    case 0: return [4 /*yield*/, this.product_service.findOne(id, { relations: ['category'] })];
                     case 1:
                         exist_product = _b.sent();
                         if (!exist_product)
@@ -80,21 +82,25 @@ var ProductService = /** @class */ (function () {
     ProductService.prototype.create = function (_a) {
         var name = _a.name, price = _a.price, category = _a.category, brand = _a.brand, detail = _a.detail, image = _a.image, weight = _a.weight;
         return __awaiter(this, void 0, void 0, function () {
-            var product, result;
+            var exist_category, product, result;
             return __generator(this, function (_b) {
                 switch (_b.label) {
-                    case 0:
+                    case 0: return [4 /*yield*/, this.category_service.findOne({ id: category })];
+                    case 1:
+                        exist_category = _b.sent();
+                        if (!exist_category)
+                            throw new Error('Category does not exists');
                         product = this.product_service.create({
                             name: name,
                             price: price,
-                            category: category,
+                            category: exist_category,
                             brand: brand,
                             detail: detail,
                             image: image,
                             weight: weight
                         });
                         return [4 /*yield*/, this.product_service.save(product)];
-                    case 1:
+                    case 2:
                         _b.sent();
                         result = new ProductDto_1.ProductDto(product);
                         return [2 /*return*/, result];
@@ -102,27 +108,33 @@ var ProductService = /** @class */ (function () {
             });
         });
     };
-    ProductService.prototype.update = function (id, product) {
+    ProductService.prototype.update = function (id, request, category_id) {
         return __awaiter(this, void 0, void 0, function () {
-            var exist_product, property, object;
+            var exist_product, exist_category, result, product, object;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, this.product_service.findOne(id)];
+                    case 0: return [4 /*yield*/, this.product_service.findOne(id, { relations: ['category'] })];
                     case 1:
                         exist_product = _a.sent();
                         if (!exist_product)
                             return [2 /*return*/, new Error('Product does not exists')];
-                        for (property in exist_product) {
-                            if (product[property] !== undefined) {
-                                if (exist_product[property] !== product[property]) {
-                                    exist_product[property] = product[property];
-                                }
-                            }
-                        }
-                        return [4 /*yield*/, this.product_service.save(exist_product)];
+                        if (!category_id) return [3 /*break*/, 3];
+                        return [4 /*yield*/, this.category_service.findOne({ id: category_id })];
                     case 2:
+                        exist_category = _a.sent();
+                        if (!exist_category)
+                            return [2 /*return*/, new Error('Category does not exists')];
+                        exist_product.category = exist_category;
+                        _a.label = 3;
+                    case 3:
+                        result = Object.assign(exist_product, request);
+                        return [4 /*yield*/, this.product_service.save(result)];
+                    case 4:
                         _a.sent();
-                        object = new ProductDto_1.ProductDto(exist_product);
+                        return [4 /*yield*/, this.product_service.findOne(id, { relations: ['category'] })];
+                    case 5:
+                        product = _a.sent();
+                        object = new ProductDto_1.ProductDto(product);
                         return [2 /*return*/, object];
                 }
             });
@@ -134,7 +146,7 @@ var ProductService = /** @class */ (function () {
             var exist_product, s3_storage_service, filename, product;
             return __generator(this, function (_b) {
                 switch (_b.label) {
-                    case 0: return [4 /*yield*/, this.product_service.findOne(id)];
+                    case 0: return [4 /*yield*/, this.product_service.findOne(id, { relations: ['category'] })];
                     case 1:
                         exist_product = _b.sent();
                         if (!exist_product)

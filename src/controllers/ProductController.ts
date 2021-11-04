@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { ProductImageIFC, ProductRequestIFC, ProductUpdateIFC } from "../interfaces/ProductIFC";
+import { ProductRequestIFC, ProductUpdateIFC } from "../interfaces/ProductIFC";
 import { ProductService } from "../services/ProductService";
 import { S3StorageService } from "../services/S3StorageService";
 
@@ -8,7 +8,7 @@ export class ProductController {
 
   async index(request: Request, response: Response) {
 
-    const { skip,take } = request.query
+    const { skip, take } = request.query
 
     const product_service = new ProductService();
 
@@ -24,6 +24,9 @@ export class ProductController {
     const product_service = new ProductService();
 
     const result = await product_service.show({ id })
+
+    if (result instanceof Error)
+      throw new Error(result.message)
 
     return response.status(200).json(result)
   }
@@ -49,6 +52,7 @@ export class ProductController {
 
     const image: any = request.file
     const product: ProductUpdateIFC = request.body;
+    const { category_id } = request.body;
     const { id } = request.params
 
     const product_service = new ProductService();
@@ -72,7 +76,10 @@ export class ProductController {
       obj.image = url;
     }
 
-    const result = await product_service.update(id, { ...obj })
+    const result = await product_service.update(id, { ...obj }, category_id)
+
+    if (result instanceof Error)
+      throw new Error(result.message)
 
     return response.status(201).json(result)
 
@@ -85,6 +92,9 @@ export class ProductController {
     const product_service = new ProductService();
 
     const result = await product_service.delete({ id })
+
+    if (result instanceof Error)
+      throw new Error(result.message)
 
     return response.status(200).json(result)
   }

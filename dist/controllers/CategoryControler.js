@@ -1,15 +1,4 @@
 "use strict";
-var __assign = (this && this.__assign) || function () {
-    __assign = Object.assign || function(t) {
-        for (var s, i = 1, n = arguments.length; i < n; i++) {
-            s = arguments[i];
-            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
-                t[p] = s[p];
-        }
-        return t;
-    };
-    return __assign.apply(this, arguments);
-};
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -47,97 +36,52 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.ProductController = void 0;
-var ProductService_1 = require("../services/ProductService");
-var S3StorageService_1 = require("../services/S3StorageService");
-var ProductController = /** @class */ (function () {
-    function ProductController() {
+exports.CategoryController = void 0;
+var CategoryService_1 = require("../services/CategoryService");
+var CategoryController = /** @class */ (function () {
+    function CategoryController() {
     }
-    ProductController.prototype.index = function (request, response) {
+    CategoryController.prototype.index = function (request, response) {
         return __awaiter(this, void 0, void 0, function () {
-            var _a, skip, take, product_service, result;
-            return __generator(this, function (_b) {
-                switch (_b.label) {
+            var category_service, result;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
                     case 0:
-                        _a = request.query, skip = _a.skip, take = _a.take;
-                        product_service = new ProductService_1.ProductService();
-                        return [4 /*yield*/, product_service.index(Number(skip), Number(take))];
+                        category_service = new CategoryService_1.CategoryService();
+                        return [4 /*yield*/, category_service.index()];
                     case 1:
-                        result = _b.sent();
+                        result = _a.sent();
                         return [2 /*return*/, response.status(200).json(result)];
                 }
             });
         });
     };
-    ProductController.prototype.show = function (request, response) {
+    CategoryController.prototype.show = function (request, response) {
         return __awaiter(this, void 0, void 0, function () {
-            var id, product_service, result;
+            var id, category_service, result;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         id = request.params.id;
-                        product_service = new ProductService_1.ProductService();
-                        return [4 /*yield*/, product_service.show({ id: id })];
+                        category_service = new CategoryService_1.CategoryService();
+                        return [4 /*yield*/, category_service.show({ id: id })];
                     case 1:
                         result = _a.sent();
-                        if (result instanceof Error)
-                            throw new Error(result.message);
                         return [2 /*return*/, response.status(200).json(result)];
                 }
             });
         });
     };
-    ProductController.prototype.create = function (request, response) {
+    CategoryController.prototype.create = function (request, response) {
         return __awaiter(this, void 0, void 0, function () {
-            var image, product, product_service, s3_storage_service, url, result;
+            var category, category_service, result;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        image = request.file;
-                        product = request.body;
-                        product_service = new ProductService_1.ProductService();
-                        s3_storage_service = new S3StorageService_1.S3StorageService();
-                        return [4 /*yield*/, s3_storage_service.execute(image)];
+                        category = request.body;
+                        category_service = new CategoryService_1.CategoryService();
+                        return [4 /*yield*/, category_service.create(category)];
                     case 1:
-                        url = _a.sent();
-                        return [4 /*yield*/, product_service.create(__assign(__assign({}, product), { image: url }))];
-                    case 2:
-                        result = _a.sent();
-                        return [2 /*return*/, response.status(201).json(result)];
-                }
-            });
-        });
-    };
-    ProductController.prototype.update = function (request, response) {
-        return __awaiter(this, void 0, void 0, function () {
-            var image, product, category_id, id, product_service, obj, s3_storage_service, url, result_1, filename, result;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        image = request.file;
-                        product = request.body;
-                        category_id = request.body.category_id;
-                        id = request.params.id;
-                        product_service = new ProductService_1.ProductService();
-                        obj = product;
-                        if (!image) return [3 /*break*/, 4];
-                        s3_storage_service = new S3StorageService_1.S3StorageService();
-                        return [4 /*yield*/, s3_storage_service.execute(image)];
-                    case 1:
-                        url = _a.sent();
-                        return [4 /*yield*/, product_service.show({ id: id })];
-                    case 2:
-                        result_1 = _a.sent();
-                        if (result_1 instanceof Error)
-                            throw new Error(result_1.message);
-                        filename = result_1.image.substring(result_1.image.indexOf(".com/") + 5);
-                        return [4 /*yield*/, s3_storage_service.delete(filename)];
-                    case 3:
-                        _a.sent();
-                        obj.image = url;
-                        _a.label = 4;
-                    case 4: return [4 /*yield*/, product_service.update(id, __assign({}, obj), category_id)];
-                    case 5:
                         result = _a.sent();
                         if (result instanceof Error)
                             throw new Error(result.message);
@@ -146,15 +90,16 @@ var ProductController = /** @class */ (function () {
             });
         });
     };
-    ProductController.prototype.delete = function (request, response) {
+    CategoryController.prototype.update = function (request, response) {
         return __awaiter(this, void 0, void 0, function () {
-            var id, product_service, result;
+            var id, category, category_service, result;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         id = request.params.id;
-                        product_service = new ProductService_1.ProductService();
-                        return [4 /*yield*/, product_service.delete({ id: id })];
+                        category = request.body;
+                        category_service = new CategoryService_1.CategoryService();
+                        return [4 /*yield*/, category_service.update(id, category)];
                     case 1:
                         result = _a.sent();
                         if (result instanceof Error)
@@ -164,7 +109,25 @@ var ProductController = /** @class */ (function () {
             });
         });
     };
-    return ProductController;
+    CategoryController.prototype.delete = function (request, response) {
+        return __awaiter(this, void 0, void 0, function () {
+            var id, category_service, result;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        id = request.params.id;
+                        category_service = new CategoryService_1.CategoryService();
+                        return [4 /*yield*/, category_service.delete({ id: id })];
+                    case 1:
+                        result = _a.sent();
+                        if (result instanceof Error)
+                            throw new Error(result.message);
+                        return [2 /*return*/, response.status(200).json(result)];
+                }
+            });
+        });
+    };
+    return CategoryController;
 }());
-exports.ProductController = ProductController;
-//# sourceMappingURL=ProductController.js.map
+exports.CategoryController = CategoryController;
+//# sourceMappingURL=CategoryControler.js.map

@@ -12,7 +12,7 @@
      "experimentalDecorators": true,
      "strictPropertyInitialization": false,
      "sourceMap": true,
-     "strict": true,
+     "strict": false,
      "noImplicitAny": true,
      "resolveJsonModule": true,
      "forceConsistentCasingInFileNames": true,

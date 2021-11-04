@@ -1,11 +1,12 @@
 import { ProductIFC } from '../interfaces/ProductIFC'
+import { CategoryDto } from './CategoryDto';
 export class ProductDto {
 
   public id: string;
   public name: string;
   public price: number;
   public detail: string;
-  public category: string;
+  public category: CategoryDto;
   public image: string;
   public weight: string;
   public brand: string;
@@ -15,7 +16,7 @@ export class ProductDto {
     this.name = name;
     this.price = price;
     this.detail = detail;
-    this.category = category;
+    this.category = new CategoryDto(category);
     this.image = image;
     this.weight = weight;
     this.brand = brand;

@@ -36,63 +36,42 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.PostgresConnector = void 0;
-var typeorm_1 = require("typeorm");
-var PostgresConnector = /** @class */ (function () {
-    function PostgresConnector() {
-        this.url = String(process.env.DATABASE_URL);
-        this.entities = __dirname + "/../" + process.env.DATABASE_ENTITIES;
+exports.UpdateTable1636034392039 = void 0;
+var UpdateTable1636034392039 = /** @class */ (function () {
+    function UpdateTable1636034392039() {
+        this.name = 'UpdateTable1636034392039';
     }
-    Object.defineProperty(PostgresConnector.prototype, "connection", {
-        get: function () {
-            return PostgresConnector.postgres_connection;
-        },
-        enumerable: false,
-        configurable: true
-    });
-    PostgresConnector.prototype.connect = function () {
+    UpdateTable1636034392039.prototype.up = function (queryRunner) {
         return __awaiter(this, void 0, void 0, function () {
-            var opts_production, opts_development, connection;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0:
-                        opts_production = {
-                            type: 'postgres',
-                            url: this.url,
-                            ssl: true,
-                            extra: {
-                                ssl: {
-                                    rejectUnauthorized: false,
-                                },
-                            },
-                            entities: [
-                                this.entities
-                            ]
-                        };
-                        opts_development = {
-                            type: 'postgres',
-                            url: this.url,
-                            entities: [
-                                this.entities
-                            ]
-                        };
-                        return [4 /*yield*/, (0, typeorm_1.createConnection)(process.env.NODE_ENV == 'development' ? opts_development : opts_production)];
+                    case 0: return [4 /*yield*/, queryRunner.query("ALTER TABLE \"products\" ALTER COLUMN \"category\" DROP NOT NULL")];
                     case 1:
-                        connection = _a.sent();
-                        PostgresConnector.postgres_connection = connection;
+                        _a.sent();
+                        return [4 /*yield*/, queryRunner.query("ALTER TABLE \"products\" ADD CONSTRAINT \"FK_c3932231d2385ac248d0888d955\" FOREIGN KEY (\"category\") REFERENCES \"categories\"(\"id\") ON DELETE NO ACTION ON UPDATE NO ACTION")];
+                    case 2:
+                        _a.sent();
                         return [2 /*return*/];
                 }
             });
         });
     };
-    PostgresConnector.prototype.disconnect = function () {
+    UpdateTable1636034392039.prototype.down = function (queryRunner) {
         return __awaiter(this, void 0, void 0, function () {
             return __generator(this, function (_a) {
-                return [2 /*return*/, PostgresConnector.postgres_connection.close()];
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, queryRunner.query("ALTER TABLE \"products\" DROP CONSTRAINT \"FK_c3932231d2385ac248d0888d955\"")];
+                    case 1:
+                        _a.sent();
+                        return [4 /*yield*/, queryRunner.query("ALTER TABLE \"products\" ALTER COLUMN \"category\" SET NOT NULL")];
+                    case 2:
+                        _a.sent();
+                        return [2 /*return*/];
+                }
             });
         });
     };
-    return PostgresConnector;
+    return UpdateTable1636034392039;
 }());
-exports.PostgresConnector = PostgresConnector;
-//# sourceMappingURL=connect.js.map
+exports.UpdateTable1636034392039 = UpdateTable1636034392039;
+//# sourceMappingURL=1636034392039-UpdateTable.js.map

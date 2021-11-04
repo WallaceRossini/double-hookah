@@ -24,48 +24,26 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Product = void 0;
+exports.Category = void 0;
 var typeorm_1 = require("typeorm");
 var BaseEntity_1 = require("./BaseEntity");
-var Category_1 = require("./Category");
-var Product = /** @class */ (function (_super) {
-    __extends(Product, _super);
-    function Product() {
+var Category = /** @class */ (function (_super) {
+    __extends(Category, _super);
+    function Category() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
     __decorate([
         (0, typeorm_1.Column)(),
         __metadata("design:type", String)
-    ], Product.prototype, "name", void 0);
-    __decorate([
-        (0, typeorm_1.Column)({ type: 'decimal', precision: 5, scale: 2, default: 0.00 }),
-        __metadata("design:type", Number)
-    ], Product.prototype, "price", void 0);
+    ], Category.prototype, "key", void 0);
     __decorate([
         (0, typeorm_1.Column)(),
         __metadata("design:type", String)
-    ], Product.prototype, "detail", void 0);
-    __decorate([
-        (0, typeorm_1.JoinColumn)({ name: 'category' }),
-        (0, typeorm_1.ManyToOne)(function (type) { return Category_1.Category; }, function (category) { return category.key; }),
-        __metadata("design:type", Category_1.Category)
-    ], Product.prototype, "category", void 0);
-    __decorate([
-        (0, typeorm_1.Column)(),
-        __metadata("design:type", String)
-    ], Product.prototype, "image", void 0);
-    __decorate([
-        (0, typeorm_1.Column)({ default: '50g', nullable: true }),
-        __metadata("design:type", String)
-    ], Product.prototype, "weight", void 0);
-    __decorate([
-        (0, typeorm_1.Column)({ nullable: true }),
-        __metadata("design:type", String)
-    ], Product.prototype, "brand", void 0);
-    Product = __decorate([
-        (0, typeorm_1.Entity)('products')
-    ], Product);
-    return Product;
+    ], Category.prototype, "title", void 0);
+    Category = __decorate([
+        (0, typeorm_1.Entity)('categories')
+    ], Category);
+    return Category;
 }(BaseEntity_1.BaseEntity));
-exports.Product = Product;
-//# sourceMappingURL=Product.js.map
+exports.Category = Category;
+//# sourceMappingURL=Category.js.map

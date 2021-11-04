@@ -37,9 +37,6 @@ export class PostgresConnector {
     const opts_development: ConnectionOptions = {
       type: 'postgres',
       url: this.url,
-      ssl: {
-        rejectUnauthorized: false
-      },
       entities: [
         this.entities
       ]

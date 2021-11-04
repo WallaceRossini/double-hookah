@@ -1,14 +1,15 @@
+import { CategoryIFC } from "./CategoryIFC";
+
 export interface ProductID {
   id: string;
 }
 
 export interface ProductIFC {
-  id: string;
+  id?: string;
   name: string;
   price: number;
   detail: string;
-  stars: number;
-  category: string;
+  category: CategoryIFC;
   image: string;
   weight: string;
   brand: string;
@@ -29,7 +30,6 @@ export interface ProductUpdateIFC {
   name?: string;
   price?: string;
   detail?: string;
-  category?: string;
   weight?: string;
   brand?: string;
 }
